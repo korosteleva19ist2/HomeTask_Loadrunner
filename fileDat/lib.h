@@ -22,7 +22,7 @@ void logOut()
 	lr_end_transaction("LogOut", LR_AUTO);
 }
 
-void logIn(/*char* userSession,*/ )
+void logIn()
 {
 	lr_start_transaction("LogIn");
 
@@ -170,7 +170,7 @@ void toFlightsPage()
 	lr_end_transaction("ToFlightsPage", LR_AUTO);
 }
 
-void enterFlightData(/*char* departDate, char* returnDate,*/ int randNumber)
+void enterFlightData(int randNumber)
 {
 	lr_start_transaction("EnterFlightsData");
 
@@ -179,7 +179,6 @@ void enterFlightData(/*char* departDate, char* returnDate,*/ int randNumber)
 	lr_save_string(lr_paramarr_random("seatPref"), "seat_Pref");
 	lr_save_string(lr_paramarr_random("seatType"), "seat_Type");
 
-	//проверка, что города отправления и прибытия разные
 	while (strcmp(lr_eval_string("{depart_City}"), lr_eval_string("{arrive_City}")) == 0)
 	{
 		lr_save_string(lr_paramarr_random("departcity"), "arrive_City");
@@ -194,7 +193,7 @@ void enterFlightData(/*char* departDate, char* returnDate,*/ int randNumber)
 	web_add_auto_header("Upgrade-Insecure-Requests",
 		"1");
 
-	
+
 	lr_save_int(randNumber, "numPassengerRand");
 
 
@@ -203,7 +202,6 @@ void enterFlightData(/*char* departDate, char* returnDate,*/ int randNumber)
 		"lb=name=\"outboundFlight\" value=\"",
 		"rb=\"",
 		"ord=all",
-		//"search=body",
 		LAST);
 
 
@@ -243,7 +241,6 @@ void selectFlight()
 
 	lr_save_string(lr_paramarr_random("outboundflighting"), "outboundFlight");
 
-	//проверка открытия нужной страницы
 	web_reg_find("Text=Payment Details", LAST);
 
 	web_submit_data("reservations.pl_2",
