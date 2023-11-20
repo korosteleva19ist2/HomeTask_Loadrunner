@@ -5,6 +5,7 @@ Action()
 	int i;
 	int randNumber;
 	
+	
 	lr_start_transaction("UC2_Registration");
 	
 	for(i = 0; i < 9; i++)
@@ -16,39 +17,11 @@ Action()
 	lr_save_string(login,"login");
 	lr_save_string(password,"password");
 	
-	lr_start_transaction("StartWebTours");
-		
-		web_add_auto_header("Sec-Fetch-Site", 
-		"none");
-
-	web_add_auto_header("Sec-Fetch-Dest", 
-		"document");
-
-	web_revert_auto_header("Sec-Fetch-Dest");
-
-	web_revert_auto_header("Sec-Fetch-Site");
-
-	web_add_auto_header("Sec-Fetch-Mode", 
-		"navigate");
-
-	web_revert_auto_header("Sec-Fetch-Mode");
-
-	web_add_header("Sec-Fetch-User", 
-		"?1");
-
-	web_add_header("Upgrade-Insecure-Requests", 
-		"1");
-
-	web_add_header("sec-ch-ua-mobile", 
-		"?0");
-
 	
 	startWebTours();
 	
-	web_set_sockets_option("SSL_VERSION", "AUTO");
-
-	lr_end_transaction("StartWebTours",LR_AUTO);
-
+	lr_think_time(5);
+	
 	
 	
 	
@@ -72,8 +45,8 @@ Action()
 	web_add_auto_header("sec-ch-ua-mobile", 
 		"?0");
 	
-	lr_think_time(5);
 	web_reg_find("Text=<B>First time registering? Please complete the form below.</B>",LAST);
+	
 	web_url("open_registration_page", 
 		"URL=http://localhost:1080/cgi-bin/login.pl?username=&password=&getInfo=true", 
 		"TargetFrame=", 
@@ -89,6 +62,8 @@ Action()
 
 	lr_end_transaction("ToRegistrationPage",LR_AUTO);
 
+	lr_think_time(5);
+	
 	
 	
 	
@@ -96,8 +71,6 @@ Action()
 
 	web_add_header("Origin", 
 		"http://localhost:1080");
-	
-	lr_think_time(5);
 	
 	web_reg_find("Text=Thank you, <b>{login}</b>, for registering and welcome to the Web Tours family.",LAST);
 	web_submit_data("registration", 
@@ -122,10 +95,12 @@ Action()
 
 	lr_end_transaction("Registration",LR_AUTO);
 
+	lr_think_time(5);
 
 
+	
 
-	lr_start_transaction("LogIn");
+	lr_start_transaction("ToAfterRegistrationPage");
 
 	web_revert_auto_header("Sec-Fetch-User");
 
@@ -137,8 +112,6 @@ Action()
 	web_add_auto_header("Upgrade-Insecure-Requests", 
 		"1");
 	
-	lr_think_time(5);
-	
 	web_reg_find("Text=Welcome, <b>{login}</b>, to the Web Tours reservation pages.",LAST);
 	web_url("open_home_page", 
 		"URL=http://localhost:1080/cgi-bin/welcome.pl?page=menus", 
@@ -149,24 +122,14 @@ Action()
 		"Snapshot=t5.inf", 
 		"Mode=HTML", 
 		LAST);
-	lr_end_transaction("LogIn", LR_AUTO);
+	lr_end_transaction("ToAfterRegistrationPage", LR_AUTO);
 
-
-	
-	lr_start_transaction("LogOut");
-
-	web_add_header("Sec-Fetch-User",
-		"?1");
-
-	web_add_header("Upgrade-Insecure-Requests", 
-		"1");
-	
 	lr_think_time(5);
 
-	logOut();
-
-	lr_end_transaction("LogOut",LR_AUTO);
 	
+
+	
+	logOut();
 	
 	lr_end_transaction("UC2_Registration", LR_AUTO);
 
