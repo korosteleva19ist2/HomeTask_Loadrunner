@@ -10,7 +10,7 @@ DimensionTableName=Event_meter
 NumValues=1
 DimCount=2
 Dim_0=30.000000
-Dim_1=3750.000000
+Dim_1=3630.000000
 
 [DimensionFunctions]
 DimeFuncCount=1
